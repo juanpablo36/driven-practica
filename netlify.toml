@@ -1,0 +1,10 @@
+[build]
+  base = "proyecto_final"
+  command = "npm install && npm run build"
+  publish = "dist"
+
+# Vue Router usa history mode: todas las rutas deben servir index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
