@@ -3,22 +3,25 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-<<<<<<< HEAD
-load_dotenv()
-
-from app.routers import auth, admin, citas, servicios, perfil, practica, mecanicos
-=======
-
 # Cargar variables antes de importar routers
 load_dotenv()
 
 from app.routers import auth, admin, citas, servicios, perfil, practica, mecanicos, notificaciones
->>>>>>> origin/main
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173,https://localhost:5173,http://localhost:3000").split(",")
+default_origins = [
+    "http://localhost:5173",
+    "https://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://127.0.0.1:5173",
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "https://juanpablo36.github.io",
+]
+env_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "").split(",") if o.strip()]
+CORS_ORIGINS = list(set(default_origins + env_origins))
 
 app = FastAPI(
     title="driven yield Pro API",
@@ -28,15 +31,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://127.0.0.1:5173",
-        "http://localhost:3000",
-        "https://localhost:3000",
-        "null"
-    ],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

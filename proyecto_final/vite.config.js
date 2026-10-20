@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 export default defineConfig({
+  base: process.env.VITE_BASE_URL || (process.env.NODE_ENV === 'production' && !process.env.NETLIFY ? '/driven-practica/' : '/'),
   plugins: [vue()],
   resolve: {
     alias: {
